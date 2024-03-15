@@ -1,0 +1,11 @@
+spring:
+  cloud:
+    gateway:
+      mvc:
+        routes:
+          - id: product
+            uri: http://localhost:8090
+            predicates:
+              - path=/api/v1/products/**
+server:
+  port: 8022
