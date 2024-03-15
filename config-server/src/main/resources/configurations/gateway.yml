@@ -9,3 +9,8 @@ spring:
               - path=/api/v1/products/**
 server:
   port: 8022
+
+management:
+  tracing:
+    sampling:
+      probability: 1
