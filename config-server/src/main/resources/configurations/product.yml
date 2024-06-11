@@ -9,6 +9,12 @@ spring:
       ddl-auto: create-drop
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+  cloud:
+    vault:
+      token: 00000000-0000-0000-0000-000000000000
+      scheme: http
+      kv:
+        enabled: true
 
 server:
   port: 8090
