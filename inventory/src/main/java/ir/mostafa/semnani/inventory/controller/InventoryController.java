@@ -1,6 +1,7 @@
 package ir.mostafa.semnani.inventory.controller;
 
 import ir.mostafa.semnani.inventory.dto.InventoryDTO;
+import ir.mostafa.semnani.inventory.dto.ReserveQuantityResponseDTO;
 import ir.mostafa.semnani.inventory.service.InventoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,14 +22,14 @@ public class InventoryController {
         return ResponseEntity.ok(inventoryService.findAll());
     }
 
-    @GetMapping("products/{id}")
-    public ResponseEntity<Boolean> checkHaveEnoughQuantityByProductId(@PathVariable Long id, @RequestParam Long quantity) {
-        return ResponseEntity.ok(inventoryService.checkHaveEnoughQuantityByProductId(id, quantity));
-    }
-
     @PostMapping
     public ResponseEntity<InventoryDTO> save(@RequestBody InventoryDTO inventoryDTO) {
         return new ResponseEntity<>(inventoryService.save(inventoryDTO), HttpStatus.CREATED);
+    }
+
+    @PostMapping("reserve-quantity")
+    public ResponseEntity<ReserveQuantityResponseDTO> reserveQuantity(@RequestBody InventoryDTO inventoryDTO) {
+        return ResponseEntity.ok(inventoryService.reserveQuantity(inventoryDTO));
     }
 
 }

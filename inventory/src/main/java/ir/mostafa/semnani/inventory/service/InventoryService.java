@@ -1,6 +1,7 @@
 package ir.mostafa.semnani.inventory.service;
 
 import ir.mostafa.semnani.inventory.dto.InventoryDTO;
+import ir.mostafa.semnani.inventory.dto.ReserveQuantityResponseDTO;
 
 import java.util.List;
 
@@ -9,5 +10,6 @@ public interface InventoryService {
 
     InventoryDTO save(InventoryDTO inventoryDTO);
 
-    Boolean checkHaveEnoughQuantityByProductId(Long productId, Long requestedQuantity);
+    ReserveQuantityResponseDTO reserveQuantity(InventoryDTO inventoryDTO);
+
 }
