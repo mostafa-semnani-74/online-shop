@@ -14,6 +14,7 @@ public class OrderMapper {
         return Order.builder()
                 .id(dto.id())
                 .productId(dto.productId())
+                .customerId(dto.customerId())
                 .quantity(dto.quantity())
                 .build();
     }
@@ -25,6 +26,7 @@ public class OrderMapper {
         return new OrderDTO(
                 entity.getId(),
                 entity.getProductId(),
+                entity.getCustomerId(),
                 entity.getQuantity());
     }
 
