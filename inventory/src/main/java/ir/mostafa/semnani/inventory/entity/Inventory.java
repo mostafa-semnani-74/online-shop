@@ -1,9 +1,6 @@
 package ir.mostafa.semnani.inventory.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -21,4 +18,6 @@ public class Inventory {
 
     private Long quantity;
 
+    @Version
+    private Integer version;
 }

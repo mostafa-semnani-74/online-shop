@@ -8,4 +8,6 @@ public interface InventoryService {
     List<InventoryDTO> findAll();
 
     InventoryDTO save(InventoryDTO inventoryDTO);
+
+    Boolean checkHaveEnoughQuantityByProductId(Long productId, Long requestedQuantity);
 }

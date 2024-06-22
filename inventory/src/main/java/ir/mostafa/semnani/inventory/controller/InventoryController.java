@@ -21,6 +21,11 @@ public class InventoryController {
         return ResponseEntity.ok(inventoryService.findAll());
     }
 
+    @GetMapping("products/{id}")
+    public ResponseEntity<Boolean> checkHaveEnoughQuantityByProductId(@PathVariable Long id, @RequestParam Long quantity) {
+        return ResponseEntity.ok(inventoryService.checkHaveEnoughQuantityByProductId(id, quantity));
+    }
+
     @PostMapping
     public ResponseEntity<InventoryDTO> save(@RequestBody InventoryDTO inventoryDTO) {
         return new ResponseEntity<>(inventoryService.save(inventoryDTO), HttpStatus.CREATED);
