@@ -19,16 +19,15 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
-    private static final String INVENTORY_BASE_URL = "http://localhost:8091/api/v1/inventories";
+    private static final String INVENTORY_BASE_URL = "http://inventory/api/v1/inventories";
 
     private final OrderRepository orderRepository;
 
-    //@LoadBalanced
-    private final WebClient.Builder webclient;
+    private final WebClient.Builder webClientBuilder;
 
     @Override
     public OrderDTO save(OrderDTO orderDTO) {
-        ReserveQuantityResponseDTO reserveQuantityResponseDTO = webclient.build()
+        ReserveQuantityResponseDTO reserveQuantityResponseDTO = webClientBuilder.build()
                 .post()
                 .uri(INVENTORY_BASE_URL + "/reserve-quantity")
                 .bodyValue(new InventoryDTO(null,
