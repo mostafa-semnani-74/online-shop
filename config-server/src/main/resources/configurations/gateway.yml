@@ -4,9 +4,22 @@ spring:
       mvc:
         routes:
           - id: product
-            uri: http://localhost:8090
+            uri: http://product
             predicates:
               - path=/api/v1/products/**
+          - id: order
+            uri: http://order
+            predicates:
+              - path=/api/v1/orders/**
+          - id: inventory
+            uri: http://inventory
+            predicates:
+              - path=/api/v1/inventories/**
+          - id: customer
+            uri: http://customer
+            predicates:
+              - path=/api/v1/customers/**
+
 server:
   port: 8022
 
