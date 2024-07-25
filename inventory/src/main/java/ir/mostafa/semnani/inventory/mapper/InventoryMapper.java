@@ -1,6 +1,6 @@
 package ir.mostafa.semnani.inventory.mapper;
 
-import ir.mostafa.semnani.inventory.dto.InventoryDTO;
+import ir.mostafa.semnani.inventory.dto.request.InventoryDTO;
 import ir.mostafa.semnani.inventory.entity.Inventory;
 
 import java.util.List;

@@ -1,7 +1,9 @@
 package ir.mostafa.semnani.inventory.controller;
 
-import ir.mostafa.semnani.inventory.dto.InventoryDTO;
-import ir.mostafa.semnani.inventory.dto.ReserveQuantityResponseDTO;
+import ir.mostafa.semnani.inventory.dto.request.InventoryDTO;
+import ir.mostafa.semnani.inventory.dto.request.ReleaseQuantityRequestDTO;
+import ir.mostafa.semnani.inventory.dto.response.ReleaseQuantityResponseDTO;
+import ir.mostafa.semnani.inventory.dto.response.ReserveQuantityResponseDTO;
 import ir.mostafa.semnani.inventory.service.InventoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,6 +32,11 @@ public class InventoryController {
     @PostMapping("reserve-quantity")
     public ResponseEntity<ReserveQuantityResponseDTO> reserveQuantity(@RequestBody InventoryDTO inventoryDTO) {
         return ResponseEntity.ok(inventoryService.reserveQuantity(inventoryDTO));
+    }
+
+    @PostMapping("release-quantity")
+    public ResponseEntity<ReleaseQuantityResponseDTO> releaseQuantity(@RequestBody ReleaseQuantityRequestDTO requestDTO) {
+        return ResponseEntity.ok(inventoryService.releaseQuantity(requestDTO));
     }
 
 }
