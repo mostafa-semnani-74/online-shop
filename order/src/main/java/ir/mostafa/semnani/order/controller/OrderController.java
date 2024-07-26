@@ -22,6 +22,11 @@ public class OrderController {
         return new ResponseEntity<>(orderService.save(orderDTO), HttpStatus.CREATED);
     }
 
+    @PostMapping("cancel/{id}")
+    public ResponseEntity<OrderDTO> cancel(@PathVariable Long id) {
+        return ResponseEntity.ok(orderService.cancel(id));
+    }
+
     @GetMapping
     public ResponseEntity<List<OrderDTO>> findAll() {
         return ResponseEntity.ok(orderService.findAll());

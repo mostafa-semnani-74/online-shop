@@ -1,5 +1,6 @@
 package ir.mostafa.semnani.order.entity;
 
+import ir.mostafa.semnani.order.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,4 +22,6 @@ public class Order {
     private Long customerId;
 
     private Long quantity;
+
+    private OrderStatus status;
 }

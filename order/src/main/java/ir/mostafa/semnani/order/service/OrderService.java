@@ -8,4 +8,6 @@ public interface OrderService {
     OrderDTO save(OrderDTO orderDTO);
 
     List<OrderDTO> findAll();
+
+    OrderDTO cancel(Long id);
 }
