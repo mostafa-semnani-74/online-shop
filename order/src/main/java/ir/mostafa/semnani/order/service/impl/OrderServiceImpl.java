@@ -6,15 +6,13 @@ import ir.mostafa.semnani.order.dto.ReleaseQuantityRequestDTO;
 import ir.mostafa.semnani.order.dto.ReserveQuantityResponseDTO;
 import ir.mostafa.semnani.order.entity.Order;
 import ir.mostafa.semnani.order.enums.OrderStatus;
+import ir.mostafa.semnani.order.mapper.OrderMapper;
 import ir.mostafa.semnani.order.repository.OrderRepository;
 import ir.mostafa.semnani.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-
-import static ir.mostafa.semnani.order.mapper.OrderMapper.*;
 
 import java.util.List;
 
@@ -27,6 +25,8 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
 
     private final WebClient.Builder webClientBuilder;
+
+    private final OrderMapper orderMapper;
 
     @Override
     public OrderDTO save(OrderDTO orderDTO) {
@@ -43,7 +43,7 @@ public class OrderServiceImpl implements OrderService {
                 .block();
         log.info("{} quantity reserved for order with product Id {}", orderDTO.quantity(), orderDTO.productId());
 
-        return toDTO(orderRepository.save(toEntity(orderDTO)));
+        return orderMapper.toDTO(orderRepository.save(orderMapper.toEntity(orderDTO)));
     }
 
     @Override
@@ -65,12 +65,12 @@ public class OrderServiceImpl implements OrderService {
         log.info("{} quantity released for order with id {} , product id {}",
                 order.getQuantity(), order.getId(), order.getProductId());
 
-        return toDTO(order);
+        return orderMapper.toDTO(order);
     }
 
     @Override
     public List<OrderDTO> findAll() {
-        return toDTOs(orderRepository.findAll());
+        return orderMapper.toDTOs(orderRepository.findAll());
     }
 
     private Order findById(Long id) {

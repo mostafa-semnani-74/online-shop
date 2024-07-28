@@ -2,38 +2,16 @@ package ir.mostafa.semnani.order.mapper;
 
 import ir.mostafa.semnani.order.dto.OrderDTO;
 import ir.mostafa.semnani.order.entity.Order;
+import org.mapstruct.Mapper;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class OrderMapper {
-    public static Order toEntity(OrderDTO dto) {
-        if (dto == null)
-            return null;
+@Mapper(componentModel = "spring")
+public interface OrderMapper {
+    Order toEntity(OrderDTO dto);
 
-        return Order.builder()
-                .id(dto.id())
-                .productId(dto.productId())
-                .customerId(dto.customerId())
-                .quantity(dto.quantity())
-                .build();
-    }
+    OrderDTO toDTO(Order entity);
 
-    public static OrderDTO toDTO(Order entity) {
-        if (entity == null)
-            return null;
-
-        return new OrderDTO(
-                entity.getId(),
-                entity.getProductId(),
-                entity.getCustomerId(),
-                entity.getQuantity());
-    }
-
-    public static List<OrderDTO> toDTOs(List<Order> orders) {
-        return orders.stream()
-                .map(OrderMapper::toDTO)
-                .collect(Collectors.toList());
-    }
+    List<OrderDTO> toDTOs(List<Order> orders);
 
 }
