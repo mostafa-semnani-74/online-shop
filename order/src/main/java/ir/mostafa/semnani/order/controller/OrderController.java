@@ -33,7 +33,7 @@ public class OrderController {
     }
 
     private ResponseEntity<String> saveFallback(Exception e) {
-        return new ResponseEntity<>("save order is done , please try later !!!!!", HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>("save order is down , please try later !!!!!", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }

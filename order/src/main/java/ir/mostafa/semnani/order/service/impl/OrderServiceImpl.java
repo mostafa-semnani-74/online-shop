@@ -12,6 +12,7 @@ import ir.mostafa.semnani.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class OrderServiceImpl implements OrderService {
     private static final String INVENTORY_BASE_URL = "http://inventory/api/v1/inventories";
 
@@ -43,7 +45,11 @@ public class OrderServiceImpl implements OrderService {
                 .block();
         log.info("{} quantity reserved for order with product Id {}", orderDTO.quantity(), orderDTO.productId());
 
-        return orderMapper.toDTO(orderRepository.save(orderMapper.toEntity(orderDTO)));
+        OrderDTO responseOrderDTO = orderMapper.toDTO(orderRepository.save(orderMapper.toEntity(orderDTO)));
+
+
+
+        return responseOrderDTO;
     }
 
     @Override
