@@ -1,5 +1,7 @@
 package ir.mostafa.semnani.order.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import ir.mostafa.semnani.order.dto.InventoryDTO;
 import ir.mostafa.semnani.order.dto.OrderDTO;
 import ir.mostafa.semnani.order.dto.ReleaseQuantityRequestDTO;
@@ -8,6 +10,7 @@ import ir.mostafa.semnani.order.entity.Order;
 import ir.mostafa.semnani.order.enums.OrderStatus;
 import ir.mostafa.semnani.order.mapper.OrderMapper;
 import ir.mostafa.semnani.order.repository.OrderRepository;
+import ir.mostafa.semnani.order.service.OrderKafkaService;
 import ir.mostafa.semnani.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,27 +32,38 @@ public class OrderServiceImpl implements OrderService {
     private final WebClient.Builder webClientBuilder;
 
     private final OrderMapper orderMapper;
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+
+    private final OrderKafkaService orderKafkaService;
 
     @Override
     public OrderDTO save(OrderDTO orderDTO) {
-        InventoryDTO inventoryDTO = new InventoryDTO(null,
-                orderDTO.productId(),
-                orderDTO.quantity());
+//        InventoryDTO inventoryDTO = new InventoryDTO(null,
+//                orderDTO.productId(),
+//                orderDTO.quantity());
+//
+//        webClientBuilder.build()
+//                .post()
+//                .uri(INVENTORY_BASE_URL + "/reserve-quantity")
+//                .bodyValue(inventoryDTO)
+//                .retrieve()
+//                .bodyToMono(ReserveQuantityResponseDTO.class)
+//                .block();
+//        log.info("{} quantity reserved for order with product Id {}", orderDTO.quantity(), orderDTO.productId());
 
-        webClientBuilder.build()
-                .post()
-                .uri(INVENTORY_BASE_URL + "/reserve-quantity")
-                .bodyValue(inventoryDTO)
-                .retrieve()
-                .bodyToMono(ReserveQuantityResponseDTO.class)
-                .block();
-        log.info("{} quantity reserved for order with product Id {}", orderDTO.quantity(), orderDTO.productId());
+        Order orderEntity = orderRepository.save(orderMapper.toEntity(orderDTO));
+        log.info("order created : {}", orderEntity);
 
-        OrderDTO responseOrderDTO = orderMapper.toDTO(orderRepository.save(orderMapper.toEntity(orderDTO)));
+        OrderDTO orderResponseDTO = orderMapper.toDTO(orderEntity);
 
+        try {
+            orderKafkaService.publishOrderCreatedEvent(objectMapper.writeValueAsString(orderResponseDTO));
+        } catch (JsonProcessingException e) {
+            log.error("error in parsing order dto to message for sending to kafka in save order service", e);
+            throw new RuntimeException(e.getMessage());
+        }
 
-
-        return responseOrderDTO;
+        return orderResponseDTO;
     }
 
     @Override
