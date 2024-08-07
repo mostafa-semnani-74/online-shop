@@ -7,6 +7,11 @@ spring:
     hibernate:
       ddl-auto: create-drop
     show-sql: true
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
 server:
   port: 8091

@@ -16,6 +16,6 @@ public class OrderKafkaServiceImpl implements OrderKafkaService {
     @Override
     public void publishOrderCreatedEvent(String orderCreatedEvent) {
         kafkaTemplate.send("order", orderCreatedEvent);
-        log.info("message with body : {} ,sent to kafka", orderCreatedEvent);
+        log.info("order created : message with body : {} ,sent to kafka", orderCreatedEvent);
     }
 }
