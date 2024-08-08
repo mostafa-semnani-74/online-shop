@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ir.mostafa.semnani.inventory.dto.request.InventoryDTO;
 import ir.mostafa.semnani.inventory.dto.request.kafka.OrderDTO;
+import ir.mostafa.semnani.inventory.dto.response.ReserveQuantityResponseDTO;
+import ir.mostafa.semnani.inventory.service.InventoryKafkaService;
 import ir.mostafa.semnani.inventory.service.InventoryService;
 import ir.mostafa.semnani.inventory.service.OrderKafkaService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ public class OrderKafkaServiceImpl implements OrderKafkaService {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     private final InventoryService inventoryService;
+    private final InventoryKafkaService inventoryKafkaService;
 
     @KafkaListener(topics = "order",
             groupId = "inventory_group")
@@ -35,7 +38,14 @@ public class OrderKafkaServiceImpl implements OrderKafkaService {
         }
 
         InventoryDTO InventoryDTO = new InventoryDTO(null, orderDTO.productId(), orderDTO.quantity());
-        inventoryService.reserveQuantity(InventoryDTO);
+        ReserveQuantityResponseDTO reserveQuantityResponseDTO = inventoryService.reserveQuantity(InventoryDTO);
+
+        try {
+            inventoryKafkaService.publishQuantityReservedEvent(objectMapper.writeValueAsString(reserveQuantityResponseDTO));
+        } catch (JsonProcessingException e) {
+            log.error("error in handleOrderCreatedEvent in parsing reserveQuantityResponseDTO to json", e);
+            throw new RuntimeException(e);
+        }
     }
 
 }
