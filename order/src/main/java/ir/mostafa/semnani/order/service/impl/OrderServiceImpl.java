@@ -51,7 +51,9 @@ public class OrderServiceImpl implements OrderService {
 //                .block();
 //        log.info("{} quantity reserved for order with product Id {}", orderDTO.quantity(), orderDTO.productId());
 
-        Order orderEntity = orderRepository.save(orderMapper.toEntity(orderDTO));
+        Order orderEntity = orderMapper.toEntity(orderDTO);
+        orderEntity.setStatus(OrderStatus.IN_PROGRESS);
+        orderRepository.save(orderEntity);
         log.info("order created : {}", orderEntity);
 
         OrderDTO orderResponseDTO = orderMapper.toDTO(orderEntity);
@@ -93,7 +95,8 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.toDTOs(orderRepository.findAll());
     }
 
-    private Order findById(Long id) {
+    @Override
+    public Order findById(Long id) {
         return orderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("order not find with id " + id));
     }
