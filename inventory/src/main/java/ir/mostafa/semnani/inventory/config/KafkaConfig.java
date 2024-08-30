@@ -18,6 +18,9 @@ public class KafkaConfig {
     @Value("${spring.kafka.consumer.bootstrap-servers}")
     private String bootstrapServer;
 
+    @Value("${spring.kafka.consumer.auto-offset-reset}")
+    private String autoOffsetResetConfig;
+
     @Bean
     public ConsumerFactory<String, String> consumerFactory() {
         Map<String, Object> config = new HashMap<>();
@@ -25,7 +28,7 @@ public class KafkaConfig {
         config.put(ConsumerConfig.GROUP_ID_CONFIG, "inventory_group");
         config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringSerializer.class);
         config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        config.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+        config.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, autoOffsetResetConfig);
         return new DefaultKafkaConsumerFactory<>(config);
     }
 
