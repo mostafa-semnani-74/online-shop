@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: notification
+  cassandra:
+    keyspace-name: notification
+    port: 9042
+    contact-points: 127.0.0.1
+    local-datacenter: datacenter1
+
+server:
+  port: 8094
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+management:
+  tracing:
+    sampling:
+      probability: 1
